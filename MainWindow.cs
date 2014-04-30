@@ -35,6 +35,8 @@ namespace hudson_build_monitor
                 HudsonMonitor.isMonitoringEnabled = false;
                 isMonitoring = false;
                 bStartMon.Text = "Start Monitoring";
+                //disable the disable button
+                bDiasble.Enabled = false;
             }
                 //if not monitoring, start monitoring
             else
@@ -46,6 +48,10 @@ namespace hudson_build_monitor
                 isMonitoring = true;
                 //change the label
                 bStartMon.Text = "Stop Monitoring";
+                //disable the timer too
+                AlarmTimer.stop();
+                //enable the disable button
+                bDiasble.Enabled = true;
             }
             
 
@@ -79,6 +85,7 @@ namespace hudson_build_monitor
 
             //convert the value to milli-seconds and start the timer
             AlarmTimer.Start(Convert.ToInt32(nAlarmPauseLength.Value)*1000);
+
         }
     }
 }

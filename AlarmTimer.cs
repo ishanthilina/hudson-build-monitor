@@ -13,17 +13,24 @@ namespace hudson_build_monitor
         
         public static void Start(int length )
         {
+            //first disable the old timer
+            if (_timer != null)
+            {
+                _timer.Enabled = false;
+            }
+
             _timer = new System.Timers.Timer(length); // Set up the timer for "length" seconds
-            //
-            // Type "_timer.Elapsed += " and press tab twice.
-            //
+           
             _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
             _timer.Enabled = true; // Enable it
         }
 
         public static void stop()
         {
-            _timer.Enabled = false;
+            if (_timer != null)
+            {
+                _timer.Enabled = false;
+            }
         }
 
         /***
@@ -38,8 +45,6 @@ namespace hudson_build_monitor
             Thread workerThread = new Thread(HudsonMonitor.run);
             workerThread.Start();
             MainWindow.isMonitoring = true;
-
-            //check the check box also
 
 
             //stop the timer
