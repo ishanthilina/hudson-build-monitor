@@ -12,7 +12,7 @@ namespace hudson_build_monitor
 {
     public partial class MainWindow : Form
     {
-        private Boolean isMonitoring = false;
+        public static Boolean isMonitoring = false;
         Thread workerThread;
 
         public MainWindow()
@@ -65,6 +65,20 @@ namespace hudson_build_monitor
                 AlarmPlayer.isAlarmEnabled = false;
                 AlarmPlayer.Stop_Alarm();
             }
+        }
+
+        private void bDiasble_Click(object sender, EventArgs e)
+        {
+            //first stop the alarm
+            AlarmPlayer.Stop_Alarm();
+
+            //stop monitoring hudson also
+            HudsonMonitor.isMonitoringEnabled = false;
+            isMonitoring = false;
+            bStartMon.Text = "Start Monitoring";
+
+            //convert the value to milli-seconds and start the timer
+            AlarmTimer.Start(Convert.ToInt32(nAlarmPauseLength.Value)*1000);
         }
     }
 }
