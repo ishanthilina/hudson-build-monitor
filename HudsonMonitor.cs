@@ -33,6 +33,7 @@ namespace hudson_build_monitor
 
                 Console.WriteLine("Last Build Number:" + lastBuild.buildNo);
                 Console.WriteLine("Last Build Status:" + lastBuild.buildStatus);
+                //if the status is not success, play the alarm
                 if (lastBuild.buildStatus.Equals(SUCCESS))
                 {
                     AlarmPlayer.Play_Alarm();
