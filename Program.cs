@@ -7,6 +7,8 @@ using System.IO;
 using System.Net;
 
 using RestSharp;
+using Newtonsoft.Json;
+
 
 
 
@@ -25,11 +27,13 @@ namespace hudson_build_monitor
             var request = new RestRequest("lastBuild/api/json", Method.GET);
             var queryResult = client.Execute(request).Content;
 
-            Console.WriteLine(queryResult);
+            dynamic stuff = JsonConvert.DeserializeObject(queryResult);
+            Console.WriteLine("Last Build Number:" + stuff.number);
+            Console.WriteLine("Last Build Status:"+stuff.result);
+
+
+
             Console.Read();
-            
-
-
         }
     }
 }
