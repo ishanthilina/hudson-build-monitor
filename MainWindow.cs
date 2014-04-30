@@ -20,6 +20,7 @@ namespace hudson_build_monitor
             InitializeComponent();
             //start monitoring
             HudsonMonitor.isMonitoringEnabled = true;
+            AlarmPlayer.isAlarmEnabled = true;
             workerThread = new Thread(HudsonMonitor.run);
             workerThread.Start();
             isMonitoring = true;
@@ -35,6 +36,7 @@ namespace hudson_build_monitor
                 isMonitoring = false;
                 bStartMon.Text = "Start Monitoring";
             }
+                //if not monitoring, start monitoring
             else
             {
                 HudsonMonitor.isMonitoringEnabled = true;
@@ -49,6 +51,20 @@ namespace hudson_build_monitor
 
 
 
+        }
+
+        private void cbEnableAlarm_CheckedChanged(object sender, EventArgs e)
+        {
+            //if the check box is enabled, enable the alarm
+            if (cbEnableAlarm.Checked)
+            {
+                AlarmPlayer.isAlarmEnabled = true;
+            }
+            else
+            {
+                AlarmPlayer.isAlarmEnabled = false;
+                AlarmPlayer.Stop_Alarm();
+            }
         }
     }
 }
