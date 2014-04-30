@@ -3,32 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.IO;
-using System.Net;
-
 using RestSharp;
 using Newtonsoft.Json;
-using System.Windows.Forms;
 
-
-
+using System.Threading;
 
 namespace hudson_build_monitor
 {
-    class Program
+    class HudsonMonitor
     {
-        static void Main(string[] args)
+        public static Boolean isMonitoringEnabled = false;
+        public static void run()
         {
-            MainWindow mw = new MainWindow();
-            Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
-            
-            //Build lastBuild=Check_Last_Build();
+            while (isMonitoringEnabled)
+            {
+                Build lastBuild = Check_Last_Build();
 
-            //Console.WriteLine("Last Build Number:" + lastBuild.buildNo);
-            //Console.WriteLine("Last Build Status:" + lastBuild.buildStatus);
-            //Console.Read();
+                Console.WriteLine("Last Build Number:" + lastBuild.buildNo);
+                Console.WriteLine("Last Build Status:" + lastBuild.buildStatus);
+                Thread.Sleep(100);
+            }
+            
         }
 
         private static Build Check_Last_Build()
@@ -43,10 +38,6 @@ namespace hudson_build_monitor
             int buildNo = Convert.ToInt32(result.number);
             String buildStatus = result.result;
             return new Build(buildNo, buildStatus);
-            
-            
         }
     }
-
-   
 }
