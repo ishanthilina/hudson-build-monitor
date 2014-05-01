@@ -47,7 +47,9 @@ namespace hudson_build_monitor
 
             
         }
-
+        /***
+         * Checks the status of the last build
+         */ 
         private static Build Check_Last_Build()
         {
             //get the result from the API

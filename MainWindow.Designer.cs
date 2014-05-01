@@ -1,6 +1,6 @@
 ﻿namespace hudson_build_monitor
 {
-    partial class MainWindow
+    partial class Main
     {
         /// <summary> 
         /// Required designer variable.
@@ -72,7 +72,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(219, 56);
+            this.label2.Location = new System.Drawing.Point(223, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 4;
@@ -80,10 +80,25 @@
             // 
             // nAlarmPauseLength
             // 
-            this.nAlarmPauseLength.Location = new System.Drawing.Point(93, 54);
+            this.nAlarmPauseLength.Location = new System.Drawing.Point(98, 53);
+            this.nAlarmPauseLength.Maximum = new decimal(new int[] {
+            1316134912,
+            2328,
+            0,
+            0});
+            this.nAlarmPauseLength.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nAlarmPauseLength.Name = "nAlarmPauseLength";
             this.nAlarmPauseLength.Size = new System.Drawing.Size(120, 20);
             this.nAlarmPauseLength.TabIndex = 5;
+            this.nAlarmPauseLength.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // bDiasble
             // 
@@ -95,18 +110,18 @@
             this.bDiasble.UseVisualStyleBackColor = true;
             this.bDiasble.Click += new System.EventHandler(this.bDiasble_Click);
             // 
-            // MainWindow
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 322);
+            this.ClientSize = new System.Drawing.Size(353, 80);
             this.Controls.Add(this.bDiasble);
             this.Controls.Add(this.nAlarmPauseLength);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbEnableAlarm);
             this.Controls.Add(this.bStartMon);
-            this.Name = "MainWindow";
+            this.Name = "Main";
             ((System.ComponentModel.ISupportInitialize)(this.nAlarmPauseLength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

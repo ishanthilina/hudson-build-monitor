@@ -10,12 +10,12 @@ using System.Threading;
 
 namespace hudson_build_monitor
 {
-    public partial class MainWindow : Form
+    public partial class Main : Form
     {
         public static Boolean isMonitoring = false;
         Thread workerThread;
 
-        public MainWindow()
+        public Main()
         {
             InitializeComponent();
             //start monitoring
@@ -87,5 +87,25 @@ namespace hudson_build_monitor
             AlarmTimer.Start(Convert.ToInt32(nAlarmPauseLength.Value)*1000);
 
         }
+
+        /***
+         * Used to set the text of the Start/Stop monitoring button
+         */ 
+        public void Monitoring_button_change_text(String message){
+            //The following code segment is used to handle the "Cross-thread operation not valid" exception.
+            //source: http://stackoverflow.com/questions/10775367/cross-thread-operation-not-valid-control-textbox1-accessed-from-a-thread-othe
+            if (this.bStartMon.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(Monitoring_button_change_text);
+                this.Invoke(d, new object[] { message });
+            }
+            else
+            {
+                this.bStartMon.Text = message;
+            }
+            bStartMon.Text = message;
+        }
+
+        delegate void SetTextCallback(string text);
     }
 }

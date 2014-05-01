@@ -44,11 +44,14 @@ namespace hudson_build_monitor
             AlarmPlayer.isAlarmEnabled = true;
             Thread workerThread = new Thread(HudsonMonitor.run);
             workerThread.Start();
-            MainWindow.isMonitoring = true;
+            Main.isMonitoring = true;
 
 
             //stop the timer
             _timer.Enabled = false;
+
+            //set the text of the buttons as well
+            Program.Change_Monitoring_Button_Text("Stop Monitoring");
         }
     }
 }

@@ -17,12 +17,14 @@ namespace hudson_build_monitor
 {
     class Program
     {
+        static Main mw = new Main();
+
         static void Main(string[] args)
         {
-            MainWindow mw = new MainWindow();
+            
             Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(mw);
             
             //Build lastBuild=Check_Last_Build();
 
@@ -45,6 +47,11 @@ namespace hudson_build_monitor
             return new Build(buildNo, buildStatus);
             
             
+        }
+
+        public static void Change_Monitoring_Button_Text(String message)
+        {
+            mw.Monitoring_button_change_text(message);
         }
     }
 
