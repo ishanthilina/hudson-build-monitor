@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace hudson_build_monitor
 {
@@ -12,7 +13,8 @@ namespace hudson_build_monitor
     {
 
         //settings
-        private static String soundFileLocation = Application.StartupPath + "\\sounds\\warning.mp3";
+        private static String soundFileLocation = ConfigurationManager.AppSettings["alarmFile"];
+
 
         public static Boolean isAlarmEnabled = false;
         public static Boolean isAlarmPlaying = false;

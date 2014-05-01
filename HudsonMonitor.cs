@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Configuration;
 
 using RestSharp;
 using Newtonsoft.Json;
@@ -20,8 +21,8 @@ namespace hudson_build_monitor
         
 
         //settings
-        private static String apiRoot = "http://deadlock.netbeans.org/job/trunk/";
-        private static int sleepLength = 500;
+        private static String apiRoot = ConfigurationManager.AppSettings["apiRoot"];
+        private static int sleepLength = Convert.ToInt32(ConfigurationManager.AppSettings["monitoringFrequency"])*1000;
 
         
 
