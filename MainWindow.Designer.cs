@@ -121,6 +121,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbEnableAlarm);
             this.Controls.Add(this.bStartMon);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
             ((System.ComponentModel.ISupportInitialize)(this.nAlarmPauseLength)).EndInit();
             this.ResumeLayout(false);
