@@ -107,5 +107,13 @@ namespace hudson_build_monitor
         }
 
         delegate void SetTextCallback(string text);
+
+        /***
+         * Stops the program
+         */ 
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

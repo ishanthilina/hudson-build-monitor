@@ -123,6 +123,7 @@
             this.Controls.Add(this.bStartMon);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.nAlarmPauseLength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
