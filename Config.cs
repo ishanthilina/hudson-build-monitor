@@ -14,25 +14,25 @@ namespace hudson_build_monitor
         }
 
         [System.Configuration.ConfigurationProperty("buildJobs")]
-        [ConfigurationCollection(typeof(MonitorConfigInstanceCollection), AddItemName = "job")]
-        public MonitorConfigInstanceCollection BuildJobs
+        [ConfigurationCollection(typeof(BuildJobsCollection), AddItemName = "job")]
+        public BuildJobsCollection BuildJobs
         {
             get
             {
                 object o = this["buildJobs"];
-                return o as MonitorConfigInstanceCollection;
+                return o as BuildJobsCollection;
             }
         }
 
     }
 
-    public class MonitorConfigInstanceCollection : ConfigurationElementCollection
+    public class BuildJobsCollection : ConfigurationElementCollection
     {
-        public MonitorConfigInstanceElement this[int index]
+        public BuildJob this[int index]
         {
             get
             {
-                return base.BaseGet(index) as MonitorConfigInstanceElement;
+                return base.BaseGet(index) as BuildJob;
             }
             set
             {
@@ -44,9 +44,9 @@ namespace hudson_build_monitor
             }
         }
 
-        public new MonitorConfigInstanceElement this[string responseString]
+        public new BuildJob this[string responseString]
         {
-            get { return (MonitorConfigInstanceElement)BaseGet(responseString); }
+            get { return (BuildJob)BaseGet(responseString); }
             set
             {
                 if (BaseGet(responseString) != null)
@@ -59,16 +59,16 @@ namespace hudson_build_monitor
 
         protected override System.Configuration.ConfigurationElement CreateNewElement()
         {
-            return new MonitorConfigInstanceElement();
+            return new BuildJob();
         }
 
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
-            return ((MonitorConfigInstanceElement)element).Name;
+            return ((BuildJob)element).Name;
         }
     }
 
-    public class MonitorConfigInstanceElement : ConfigurationElement
+    public class BuildJob : ConfigurationElement
     {
         //Make sure to set IsKey=true for property exposed as the GetElementKey above
         [ConfigurationProperty("name", IsKey = true, IsRequired = true)]

@@ -21,12 +21,15 @@ namespace hudson_build_monitor
 
         static void Main(string[] args)
         {
-            //MonitorConfig config = MonitorConfig.GetConfig();
-            //foreach (var item in config.BuildJobs)
-            //{
-            //    Console.WriteLine(item);
+            MonitorConfig config = MonitorConfig.GetConfig();
+            Console.WriteLine("Printing items");
+            foreach (BuildJobsCollection item in config.BuildJobs)
+            {
+                Console.WriteLine(item);
 
-            //}
+            }
+
+            Console.WriteLine(" done");
 
             Application.EnableVisualStyles();
             Application.Run(mw);
