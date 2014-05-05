@@ -9,6 +9,8 @@ using System.Net;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.Configuration;
+
 
 
 
@@ -21,15 +23,9 @@ namespace hudson_build_monitor
 
         static void Main(string[] args)
         {
-            MonitorConfig config = MonitorConfig.GetConfig();
-            Console.WriteLine("Printing items");
-            foreach (BuildJobsCollection item in config.BuildJobs)
-            {
-                Console.WriteLine(item);
+       
 
-            }
-
-            Console.WriteLine(" done");
+            
 
             Application.EnableVisualStyles();
             Application.Run(mw);

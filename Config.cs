@@ -10,61 +10,43 @@ namespace hudson_build_monitor
     {
         public static MonitorConfig GetConfig()
         {
-            return (MonitorConfig)System.Configuration.ConfigurationManager.GetSection("buildJobsSection") ?? new MonitorConfig();
+            return (MonitorConfig)System.Configuration.ConfigurationManager.GetSection("buildJobsSection");
         }
 
-        [System.Configuration.ConfigurationProperty("buildJobs")]
-        [ConfigurationCollection(typeof(BuildJobsCollection), AddItemName = "job")]
-        public BuildJobsCollection BuildJobs
+        [ConfigurationProperty("buildJobs", IsRequired = true, IsDefaultCollection = true)]
+        //[ConfigurationCollection(typeof(BuildJobsCollection), AddItemName = "job")]
+        public BuildJobsCollection BuildJob
         {
-            get
-            {
-                object o = this["buildJobs"];
-                return o as BuildJobsCollection;
-            }
+            get { return (BuildJobsCollection)this["buildJobs"]; }
+            set { this["buildJobs"] = value; }
         }
 
     }
 
     public class BuildJobsCollection : ConfigurationElementCollection
     {
-        public BuildJob this[int index]
-        {
-            get
-            {
-                return base.BaseGet(index) as BuildJob;
-            }
-            set
-            {
-                if (base.BaseGet(index) != null)
-                {
-                    base.BaseRemoveAt(index);
-                }
-                this.BaseAdd(index, value);
-            }
-        }
-
-        public new BuildJob this[string responseString]
-        {
-            get { return (BuildJob)BaseGet(responseString); }
-            set
-            {
-                if (BaseGet(responseString) != null)
-                {
-                    BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-                }
-                BaseAdd(value);
-            }
-        }
-
-        protected override System.Configuration.ConfigurationElement CreateNewElement()
+        protected override ConfigurationElement CreateNewElement()
         {
             return new BuildJob();
         }
 
-        protected override object GetElementKey(System.Configuration.ConfigurationElement element)
+        protected override object GetElementKey(ConfigurationElement element)
         {
+            //set to whatever Element Property you want to use for a key
             return ((BuildJob)element).Name;
+        }
+        public BuildJob this[int index]
+        {
+            get { return (BuildJob)base.BaseGet(index); }
+            set{
+                if(base.BaseGet(index)!=null){
+                    base.BaseRemoveAt(index);
+                }
+                base.BaseAdd(index,value);
+            }
+        }
+        public BuildJob this[string id]{
+            get{return (BuildJob)base.BaseGet(id);}
         }
     }
 
