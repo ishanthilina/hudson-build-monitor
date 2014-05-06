@@ -28,6 +28,7 @@ namespace hudson_build_monitor
 
         //hudson build statuses
         public const String SUCCESS = "SUCCESS";
+        public const String BUILDING = "BUILDING";
 
         public static Boolean isMonitoringEnabled = false;
         public static Boolean beSilentTillNextCommit = false;
@@ -63,7 +64,7 @@ namespace hudson_build_monitor
                         Console.WriteLine();
 
                         //if the status is not success
-                        if (!lastBuild.buildStatus.Equals(SUCCESS))
+                        if (!lastBuild.buildStatus.Equals(SUCCESS) && !lastBuild.buildStatus.Equals(BUILDING))
                         {
                             log.Info("Build: " + buildName+" Number: "+lastBuild.buildNo+" - Build failed." );
                             //add the build to the failed list
@@ -172,7 +173,9 @@ namespace hudson_build_monitor
 
                 else
                 {
-                    return new Build(00, "SUCCESS");
+                    reader.ReadToFollowing("number");
+                    buildNo = Convert.ToInt32(reader.ReadElementContentAsString());
+                    return new Build(buildNo, BUILDING);
                 }
                 
 
