@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.nAlarmPauseLength = new System.Windows.Forms.NumericUpDown();
             this.bDiasble = new System.Windows.Forms.Button();
+            this.bDisableTillNextCommit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nAlarmPauseLength)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,7 +42,7 @@
             // 
             this.bStartMon.Location = new System.Drawing.Point(12, 12);
             this.bStartMon.Name = "bStartMon";
-            this.bStartMon.Size = new System.Drawing.Size(98, 23);
+            this.bStartMon.Size = new System.Drawing.Size(98, 26);
             this.bStartMon.TabIndex = 0;
             this.bStartMon.Text = "Stop Monitoring";
             this.bStartMon.UseVisualStyleBackColor = true;
@@ -52,7 +53,7 @@
             this.cbEnableAlarm.AutoSize = true;
             this.cbEnableAlarm.Checked = true;
             this.cbEnableAlarm.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbEnableAlarm.Location = new System.Drawing.Point(125, 16);
+            this.cbEnableAlarm.Location = new System.Drawing.Point(116, 16);
             this.cbEnableAlarm.Name = "cbEnableAlarm";
             this.cbEnableAlarm.Size = new System.Drawing.Size(94, 17);
             this.cbEnableAlarm.TabIndex = 1;
@@ -110,11 +111,22 @@
             this.bDiasble.UseVisualStyleBackColor = true;
             this.bDiasble.Click += new System.EventHandler(this.bDiasble_Click);
             // 
+            // bDisableTillNextCommit
+            // 
+            this.bDisableTillNextCommit.Location = new System.Drawing.Point(216, 9);
+            this.bDisableTillNextCommit.Name = "bDisableTillNextCommit";
+            this.bDisableTillNextCommit.Size = new System.Drawing.Size(133, 28);
+            this.bDisableTillNextCommit.TabIndex = 7;
+            this.bDisableTillNextCommit.Text = "Disable Till Next Commit";
+            this.bDisableTillNextCommit.UseVisualStyleBackColor = true;
+            this.bDisableTillNextCommit.Click += new System.EventHandler(this.bDisableTillNextCommit_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(353, 80);
+            this.Controls.Add(this.bDisableTillNextCommit);
             this.Controls.Add(this.bDiasble);
             this.Controls.Add(this.nAlarmPauseLength);
             this.Controls.Add(this.label2);
@@ -138,5 +150,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown nAlarmPauseLength;
         private System.Windows.Forms.Button bDiasble;
+        private System.Windows.Forms.Button bDisableTillNextCommit;
     }
 }

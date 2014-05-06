@@ -60,7 +60,6 @@
     <Compile Include="AlarmPlayer.cs" />
     <Compile Include="AlarmTimer.cs" />
     <Compile Include="Build.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="HudsonMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
