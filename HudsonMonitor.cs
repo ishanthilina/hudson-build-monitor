@@ -50,7 +50,14 @@ namespace hudson_build_monitor
 
                         Build lastBuild = Check_Last_Build(settings[buildName]);
 
-                        Console.WriteLine("Name: "+buildName+"\t||\tNumber:" + lastBuild.buildNo + "\t||\tStatus: " + lastBuild.buildStatus);
+                        //Console.WriteLine("Name: "+buildName+"\t||\tNumber:" + lastBuild.buildNo + "\t||\tStatus: " + lastBuild.buildStatus);
+                        Console.Write("Name: " + buildName.PadRight(25));
+                        Console.Write("Number: " + lastBuild.buildNo.ToString().PadRight(10));
+                        Console.Write("Status: " + lastBuild.buildStatus.ToString().PadRight(10));
+                        Console.WriteLine();
+
+                        //Console.WriteLine("{0,10}{1,20}{2,40}", "Name: " + buildName, "Number:" + lastBuild.buildNo ,"Status: " + lastBuild.buildStatus);
+
 
                         //if the status is not success
                         if (!lastBuild.buildStatus.Equals(SUCCESS))
