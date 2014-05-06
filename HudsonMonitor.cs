@@ -12,6 +12,7 @@ using WMPLib;
 
 using System.Xml;
 using System.IO;
+using System.Collections.Specialized;
 
 
 namespace hudson_build_monitor
@@ -22,11 +23,16 @@ namespace hudson_build_monitor
         public const String SUCCESS = "SUCCESS";
 
         public static Boolean isMonitoringEnabled = false;
+        public static Boolean beSilentTillNextCommit = false;
+
+        private static Dictionary<String, Build> failedBuilds = new Dictionary<String, Build>();
 
 
         //settings
-        private static String apiRoot = ConfigurationManager.AppSettings["apiRoot"];
+        //private static String apiRoot = ConfigurationManager.AppSettings["apiRoot"];
         private static int sleepLength = Convert.ToInt32(ConfigurationManager.AppSettings["monitoringFrequency"]) * 1000;
+        private static NameValueCollection settings = ConfigurationManager.GetSection("buildJobsSection/buildJobs") 
+                                            as System.Collections.Specialized.NameValueCollection;
 
 
 
@@ -34,15 +40,71 @@ namespace hudson_build_monitor
         {
             while (isMonitoringEnabled)
             {
-                Build lastBuild = Check_Last_Build();
-
-                Console.WriteLine("Build Number:" + lastBuild.buildNo + " || Status: " + lastBuild.buildStatus);
                 
-                //if the status is not success, play the alarm
-                if (!lastBuild.buildStatus.Equals(SUCCESS))
+
+                if (settings != null)
                 {
-                    AlarmPlayer.Play_Alarm();
+                    foreach (string buildName in settings.AllKeys)
+                    {
+                        //Console.WriteLine(key + ": " + settings[key]);
+
+                        Build lastBuild = Check_Last_Build(settings[buildName]);
+
+                        //Console.WriteLine("Name: "+buildName+"\t||\tNumber:" + lastBuild.buildNo + "\t||\tStatus: " + lastBuild.buildStatus);
+                        Console.Write("Name: " + buildName.PadRight(25));
+                        Console.Write("Number: " + lastBuild.buildNo.ToString().PadRight(10));
+                        Console.Write("Status: " + lastBuild.buildStatus.ToString().PadRight(10));
+                        Console.WriteLine();
+
+                        //Console.WriteLine("{0,10}{1,20}{2,40}", "Name: " + buildName, "Number:" + lastBuild.buildNo ,"Status: " + lastBuild.buildStatus);
+
+
+                        //if the status is not success
+                        if (!lastBuild.buildStatus.Equals(SUCCESS))
+                        {
+                            //add the build to the failed list
+                            if (!failedBuilds.ContainsKey(buildName))
+                            {
+                                failedBuilds.Add(buildName, lastBuild);
+                            }
+                            //if the alarm should keep silent till the next commit
+                            if (beSilentTillNextCommit)
+                            {
+                                //if this is a new commit
+                                if (lastBuild.buildNo > failedBuilds[buildName].buildNo)
+                                {
+                                    //play the alarm
+                                    AlarmPlayer.Play_Alarm();
+                                    //reset the status
+                                    beSilentTillNextCommit = false;
+                                }
+                            }
+                            else
+                            {
+                                //play the alarm
+                                AlarmPlayer.Play_Alarm();
+                            }
+                            
+                        }
+                        //if the status is success
+                        else
+                        {
+                            //check if the build has failed in the previous commit
+                            if (failedBuilds.ContainsKey(buildName))
+                            {
+                                //remove it from the failed list 
+                                failedBuilds.Remove(buildName);
+
+                                //disable the alarm if no builds are failed now
+                                if (failedBuilds.Count == 0)
+                                {
+                                    AlarmPlayer.Stop_Alarm();
+                                }
+                            }
+                        }
+                    }
                 }
+                
                 Thread.Sleep(sleepLength);
             }
 
@@ -52,18 +114,23 @@ namespace hudson_build_monitor
 
 
         }
+
+        /***
+         * Clear all the information regarding the previous failed builds.
+         */ 
+        public static void ClearBuildData()
+        {
+            failedBuilds.Clear();
+        }
         /***
          * Checks the status of the last build
          */
-        private static Build Check_Last_Build()
+        private static Build Check_Last_Build(String apiRoot)
         {
             //get the result from the API
             var client = new RestClient(apiRoot);
             var request = new RestRequest("lastBuild/api/xml", Method.GET);
             var queryResult = client.Execute(request).Content;
-
-            //parse the JSON string
-            //dynamic result = JsonConvert.DeserializeObject(queryResult);
 
             StringBuilder output = new StringBuilder();
             String buildStatus;

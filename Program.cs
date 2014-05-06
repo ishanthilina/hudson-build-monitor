@@ -9,6 +9,8 @@ using System.Net;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.Configuration;
+
 
 
 
@@ -21,7 +23,10 @@ namespace hudson_build_monitor
 
         static void Main(string[] args)
         {
+       
+
             
+
             Application.EnableVisualStyles();
             Application.Run(mw);
         }

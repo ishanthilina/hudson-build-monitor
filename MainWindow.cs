@@ -115,5 +115,18 @@ namespace hudson_build_monitor
         {
             Environment.Exit(0);
         }
+
+        private void bDisableTillNextCommit_Click(object sender, EventArgs e)
+        {
+            //clear the failed build data in the monitor.
+            //Reason - Say one build(A) is broken, other is fine(B). The alarm will start ringing 
+            //on the  next commit of B. Such behaviour is not desired.
+            //HudsonMonitor.ClearBuildData();
+
+            HudsonMonitor.beSilentTillNextCommit = true;
+
+            //stop the alarm
+            AlarmPlayer.Stop_Alarm();
+        }
     }
 }
