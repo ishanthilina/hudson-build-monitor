@@ -14,11 +14,18 @@ using System.Xml;
 using System.IO;
 using System.Collections.Specialized;
 
+using log4net;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 
 namespace hudson_build_monitor
 {
     class HudsonMonitor
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod
+().DeclaringType); 
+
         //hudson build statuses
         public const String SUCCESS = "SUCCESS";
 
@@ -38,41 +45,42 @@ namespace hudson_build_monitor
 
         public static void run()
         {
+            log.Info("Monitoring started.");
+
             while (isMonitoringEnabled)
             {
-                
 
                 if (settings != null)
                 {
                     foreach (string buildName in settings.AllKeys)
                     {
-                        //Console.WriteLine(key + ": " + settings[key]);
-
+                        
                         Build lastBuild = Check_Last_Build(settings[buildName]);
 
-                        //Console.WriteLine("Name: "+buildName+"\t||\tNumber:" + lastBuild.buildNo + "\t||\tStatus: " + lastBuild.buildStatus);
                         Console.Write("Name: " + buildName.PadRight(25));
                         Console.Write("Number: " + lastBuild.buildNo.ToString().PadRight(10));
                         Console.Write("Status: " + lastBuild.buildStatus.ToString().PadRight(10));
                         Console.WriteLine();
 
-                        //Console.WriteLine("{0,10}{1,20}{2,40}", "Name: " + buildName, "Number:" + lastBuild.buildNo ,"Status: " + lastBuild.buildStatus);
-
-
                         //if the status is not success
                         if (!lastBuild.buildStatus.Equals(SUCCESS))
                         {
+                            log.Info("Build: " + buildName+" Number: "+lastBuild.buildNo+" - Build failed." );
                             //add the build to the failed list
                             if (!failedBuilds.ContainsKey(buildName))
                             {
+                                log.Info(" Build: " + buildName + " Number: " + lastBuild.buildNo + " - Added the build to the failed list.");
                                 failedBuilds.Add(buildName, lastBuild);
                             }
                             //if the alarm should keep silent till the next commit
                             if (beSilentTillNextCommit)
                             {
+                                log.Info("Build: " + buildName + " Number: " + lastBuild.buildNo + " - Be silent till next commit=True.");
                                 //if this is a new commit
                                 if (lastBuild.buildNo > failedBuilds[buildName].buildNo)
                                 {
+                                    log.Info("Build: " + buildName + " Number: " + lastBuild.buildNo + " - Fails on next commit also, replaying alarm.");
+
                                     //play the alarm
                                     AlarmPlayer.Play_Alarm();
                                     //reset the status
@@ -81,6 +89,8 @@ namespace hudson_build_monitor
                             }
                             else
                             {
+                                log.Info("Build: " + buildName + " Number: " + lastBuild.buildNo + " - Build failed, playing alarm.");
+
                                 //play the alarm
                                 AlarmPlayer.Play_Alarm();
                             }
@@ -92,12 +102,15 @@ namespace hudson_build_monitor
                             //check if the build has failed in the previous commit
                             if (failedBuilds.ContainsKey(buildName))
                             {
+                                log.Info("Build: " + buildName + " Number: " + lastBuild.buildNo + " -  Removing build form failed list.");
+
                                 //remove it from the failed list 
                                 failedBuilds.Remove(buildName);
 
                                 //disable the alarm if no builds are failed now
                                 if (failedBuilds.Count == 0)
                                 {
+                                    log.Info("Build: " + buildName + " Number: " + lastBuild.buildNo + " - All builds fine, disabling alarm.");
                                     AlarmPlayer.Stop_Alarm();
                                 }
                             }
@@ -110,6 +123,8 @@ namespace hudson_build_monitor
 
             //stop the alarm when stopping monitoring
             AlarmPlayer.Stop_Alarm();
+
+            log.Info("Monitoring stopped.");
 
 
 
