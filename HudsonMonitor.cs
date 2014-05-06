@@ -50,17 +50,32 @@ namespace hudson_build_monitor
 
             while (isMonitoringEnabled)
             {
+                Console.WriteLine("\t ### #################### ### ");
+                Console.WriteLine("\t ### Hudson Build Monitor ### ");
+                Console.WriteLine("\t ### #################### ### ");
+                Console.WriteLine();
+
+                //print the time
+                Console.WriteLine("\t   Current Time: "+DateTime.Now.ToString("h:mm:ss tt"));
+                Console.WriteLine();
+
 
                 if (settings != null)
                 {
+                    Console.Write("Name".PadRight(25));
+                    Console.Write("Number".PadRight(10));
+                    Console.Write("Status".PadRight(10));
+                    Console.WriteLine();
+                    Console.WriteLine();
+
                     foreach (string buildName in settings.AllKeys)
                     {
                         
                         Build lastBuild = Check_Last_Build(settings[buildName]);
 
-                        Console.Write("Name: " + buildName.PadRight(25));
-                        Console.Write("Number: " + lastBuild.buildNo.ToString().PadRight(10));
-                        Console.Write("Status: " + lastBuild.buildStatus.ToString().PadRight(10));
+                        Console.Write(buildName.PadRight(25));
+                        Console.Write(lastBuild.buildNo.ToString().PadRight(10));
+                        Console.Write(lastBuild.buildStatus.ToString().PadRight(10));
                         Console.WriteLine();
 
                         //if the status is not success
@@ -117,6 +132,8 @@ namespace hudson_build_monitor
                             }
                         }
                     }
+                    //refresh the output
+                    Console.SetCursorPosition(0, Console.CursorTop - (settings.Count+8));
                 }
                 
                 Thread.Sleep(sleepLength);
